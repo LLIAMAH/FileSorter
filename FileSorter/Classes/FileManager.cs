@@ -26,6 +26,13 @@ namespace FileSorter.Classes
                 if (!fi.Exists)
                     continue;
 
+                var attributes = File.GetAttributes(files[i].FullName);
+                if ((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+                {
+                    attributes = RemoveAttribute(attributes, FileAttributes.ReadOnly);
+                    File.SetAttributes(files[i].FullName, attributes);
+                }
+
                 var deleteOperation = files[i].ChangesStatus.Where(o => o.Change == Change.Delete).SingleOrDefault();
                 if (deleteOperation != null)
                 {
@@ -46,6 +53,11 @@ namespace FileSorter.Classes
                 else if (groupOperation != null || attachmentOperation != null)
                     files[i] = GroupAndAttachmentFile(files[i], groupOperation, attachmentOperation);
             }
+        }
+
+        private static FileAttributes RemoveAttribute(FileAttributes attributes, FileAttributes attributesToRemove)
+        {
+            return attributes & ~attributesToRemove;
         }
 
         private static IFileItem GroupAndAttachmentFile(IFileItem fileItem, ChangesStatus groupOperation, ChangesStatus attachmentOperation)
