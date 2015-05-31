@@ -38,9 +38,9 @@
             this.lContextName.AutoSize = true;
             this.lContextName.Location = new System.Drawing.Point(12, 9);
             this.lContextName.Name = "lContextName";
-            this.lContextName.Size = new System.Drawing.Size(75, 13);
+            this.lContextName.Size = new System.Drawing.Size(220, 13);
             this.lContextName.TabIndex = 0;
-            this.lContextName.Text = "Context name:";
+            this.lContextName.Text = "Context name (only name, without extension):";
             // 
             // tbContextName
             // 
@@ -58,6 +58,7 @@
             this.bnOK.TabIndex = 2;
             this.bnOK.Text = "OK";
             this.bnOK.UseVisualStyleBackColor = true;
+            this.bnOK.Click += new System.EventHandler(this.bnOK_Click);
             // 
             // FContextNew
             // 

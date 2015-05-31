@@ -54,7 +54,10 @@ namespace FileSorter
 
         private void tsmiOptions_Click(object sender, EventArgs e)
         {
-            using (IFormSimple form = new Forms.FOptions())
+            if (CheckContextLost())
+                return;
+
+            using (IFormSetContext form = new Forms.FOptions())
             {
                 form.SetContext(cbContext.SelectedItem as String);
                 if (form.ShowDialog() == DialogResult.OK)
@@ -104,6 +107,9 @@ namespace FileSorter
 
         private void bnBrowseRootFolder_Click(object sender, EventArgs e)
         {
+            if (CheckContextLost())
+                return;
+
             if(fbdBroseRootFolder.ShowDialog() == DialogResult.OK)
             {
                 tbRootFolder.Text = fbdBroseRootFolder.SelectedPath;
@@ -271,6 +277,9 @@ namespace FileSorter
 
         private void bnRefreshFolder_Click(object sender, EventArgs e)
         {
+            if (CheckContextLost())
+                return;
+
             RefreshDataGridView();
         }
 
@@ -300,7 +309,21 @@ namespace FileSorter
 
         private void bnCreateNewContext_Click(object sender, EventArgs e)
         {
+            using(IFormSimple form = new FContextNew())
+            {
+                if(form.ShowDialog() == DialogResult.OK)
+                {
+                    ReloadOptions();
+                }
+            }
+        }
 
+        private bool CheckContextLost()
+        {
+            if (cbContext.Items.Count == 0 || cbContext.SelectedIndex < 0)
+                return true;
+
+            return false;
         }
     }
 }

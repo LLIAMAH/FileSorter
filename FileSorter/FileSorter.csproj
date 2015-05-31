@@ -83,6 +83,7 @@
     <Compile Include="Forms\FRename.Designer.cs">
       <DependentUpon>FRename.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\IFormSetContext.cs" />
     <Compile Include="Forms\IFormSimple.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

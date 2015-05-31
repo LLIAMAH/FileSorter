@@ -41,7 +41,7 @@ namespace FileSorter.Classes
             return result;
         }
 
-        private static XDocument OpenDocument(string fileName)
+        internal static XDocument OpenDocument(string fileName)
         {
             var fullName = Path.Combine(_folderConfigName, fileName);
 

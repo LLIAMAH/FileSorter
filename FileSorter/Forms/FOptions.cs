@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace FileSorter.Forms
 {
-    public partial class FOptions : FBase, IFormSimple
+    public partial class FOptions : FBase, IFormSetContext
     {
         private string _contextFileName = "";
 
