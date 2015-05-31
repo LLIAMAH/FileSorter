@@ -10,5 +10,7 @@ namespace FileSorter.Forms
     public interface IFormSimple : IDisposable
     {
         DialogResult ShowDialog();
+
+        void SetContext(string contextFileName);
     }
 }

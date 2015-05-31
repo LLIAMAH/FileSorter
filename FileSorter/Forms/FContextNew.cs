@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace FileSorter.Forms
 {
-    public partial class FBase : Form
+    public partial class FContextNew : FBase
     {
-        public FBase()
+        public FContextNew()
         {
             InitializeComponent();
         }

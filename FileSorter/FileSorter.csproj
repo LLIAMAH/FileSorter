@@ -59,6 +59,12 @@
     <Compile Include="Forms\FBase.Designer.cs">
       <DependentUpon>FBase.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FContextNew.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FContextNew.Designer.cs">
+      <DependentUpon>FContextNew.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FGroup.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -85,6 +91,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FBase.resx">
       <DependentUpon>FBase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FContextNew.resx">
+      <DependentUpon>FContextNew.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FGroup.resx">
       <DependentUpon>FGroup.cs</DependentUpon>

@@ -12,11 +12,25 @@ namespace FileSorter.Classes
     public class OptionsManager
     {
         public const string Constant = "<empty>";
-        private const string _fileConfigName = @"Data\AppConfiguration.xml";
+        //private const string _folderConfigName = @"Data\AppConfiguration.xml";
+        private const string _folderConfigName = @"Data";
 
-        internal static Dictionary<String, String> ReadFolders()
+        public static List<FileInfo> ConfigFiles { get; private set; }
+
+        public static void LoadConfigs()
         {
-            var document = OpenDocument();
+            DirectoryInfo di = new DirectoryInfo(_folderConfigName);
+            if (ConfigFiles == null)
+                ConfigFiles = new List<FileInfo>();
+
+            ConfigFiles.Clear();
+            foreach (var item in di.GetFiles())
+                ConfigFiles.Add(item);
+        }
+
+        internal static Dictionary<String, String> ReadFolders(string fileName)
+        {
+            var document = OpenDocument(fileName);
             var folder = document.Root.Elements("Folders");
             var folders = folder.Elements("Folder");
 
@@ -27,20 +41,22 @@ namespace FileSorter.Classes
             return result;
         }
 
-        private static XDocument OpenDocument()
-        {            
-            FileInfo fi = new FileInfo(_fileConfigName);
+        private static XDocument OpenDocument(string fileName)
+        {
+            var fullName = Path.Combine(_folderConfigName, fileName);
+
+            FileInfo fi = new FileInfo(fullName);
             var di = fi.Directory;
             if (!di.Exists)
                 di.Create();
 
             if (!fi.Exists)
             {
-                using (var stream = File.Create(_fileConfigName)) { }
-                CreateBaseFile(_fileConfigName);
+                using (var stream = File.Create(fullName)) { }
+                CreateBaseFile(fullName);
             }
 
-            return XDocument.Load(_fileConfigName);
+            return XDocument.Load(fullName);
         }
 
         private static void CreateBaseFile(string fileName)
@@ -57,9 +73,9 @@ namespace FileSorter.Classes
             doc.Save(fileName);
         }
 
-        internal static KeyValuePair<string, char> ReadFilter()
+        internal static KeyValuePair<string, char> ReadFilter(string fileName)
         {
-            var document = OpenDocument();
+            var document = OpenDocument(fileName);
             var element = document.Root.Elements("Filter");
             var value = element.Attributes("value").SingleOrDefault();
             var splitter = element.Attributes("splitter").SingleOrDefault();
@@ -75,9 +91,9 @@ namespace FileSorter.Classes
             return new KeyValuePair<string, char>(Constant, splitter.Value[0]);
         }
 
-        internal static void WriteData(string filterText, string splitterText, Dictionary<string, string> updatedFolders)
+        internal static void WriteData(string fileName, string filterText, string splitterText, Dictionary<string, string> updatedFolders)
         {
-            var document = OpenDocument();
+            var document = OpenDocument(fileName);
             var element = document.Root.Elements("Filter").SingleOrDefault();
             if(element == null)
                 document.Root.Add(new XElement(XName.Get("Filter"), new XAttribute(XName.Get("value"), ""), new XAttribute(XName.Get("splitter"), "")));
@@ -97,7 +113,14 @@ namespace FileSorter.Classes
                     new XAttribute(XName.Get("name"), item.Key), 
                     new XAttribute(XName.Get("path"), String.IsNullOrEmpty(item.Value) ? string.Empty : item.Value)));
 
-            document.Save(_fileConfigName);
+            document.Save(_folderConfigName);
         }
+    }
+
+    public class Options
+    {
+        public string Filter { get; set; }
+
+        public char Splitter { get; set; }
     }
 }

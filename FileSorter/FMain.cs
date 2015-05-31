@@ -56,6 +56,7 @@ namespace FileSorter
         {
             using (IFormSimple form = new Forms.FOptions())
             {
+                form.SetContext(cbContext.SelectedItem as String);
                 if (form.ShowDialog() == DialogResult.OK)
                 {
                     ClearMenuItems();
@@ -77,12 +78,23 @@ namespace FileSorter
 
         private void ReloadOptions()
         {
-            var filter = OptionsManager.ReadFilter();
+            OptionsManager.LoadConfigs();
+
+            if (OptionsManager.ConfigFiles.Count == 0)
+                return;
+
+            foreach (var item in OptionsManager.ConfigFiles.OrderBy(o => o.Name))
+                cbContext.Items.Add(item.Name);
+
+            cbContext.SelectedIndex = 0;
+            var contextFileName = cbContext.SelectedItem as String;
+
+            var filter = OptionsManager.ReadFilter(contextFileName);
             _filter = filter.Key.Equals(OptionsManager.Constant, StringComparison.OrdinalIgnoreCase) ? "" : filter.Key;
             _splitter = filter.Value;
 
-            var folders = OptionsManager.ReadFolders();
-            foreach (var item in folders.OrderBy(o => o.Key))
+            var folder = OptionsManager.ReadFolders(contextFileName);
+            foreach (var item in folder.OrderBy(o => o.Key))
             {
                 var menuItem = new ToolStripMenuItem(item.Key) { Tag = item.Value };
                 menuItem.Click += moveTo_Click;
@@ -230,14 +242,6 @@ namespace FileSorter
         {
             foreach (DataGridViewRow row in dgvFiles.Rows)
                 row.Cells[checkedDataGridViewCheckBoxColumn.Index].Value = false;
-
-            //foreach (DataGridViewRow row in dgvFiles.Rows)
-            //{
-            //    var fileData = row.DataBoundItem as IFileItem;
-            //    fileData.Checked = false;
-            //}
-
-            //dgvFiles.Refresh();
         }
 
         private void tsmiProcess_Click(object sender, EventArgs e)
@@ -292,6 +296,11 @@ namespace FileSorter
             });
 
             dgvFiles.Refresh();
+        }
+
+        private void bnCreateNewContext_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

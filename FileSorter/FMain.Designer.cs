@@ -57,6 +57,9 @@
             this.ofdAttachment = new System.Windows.Forms.OpenFileDialog();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.bnRefreshFolder = new System.Windows.Forms.Button();
+            this.lContext = new System.Windows.Forms.Label();
+            this.cbContext = new System.Windows.Forms.ComboBox();
+            this.bnCreateNewContext = new System.Windows.Forms.Button();
             this.checkedDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.fileNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.extensionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -215,12 +218,12 @@
             this.fullNameDataGridViewTextBoxColumn,
             this.Changes});
             this.dgvFiles.DataSource = this.fileItemBindingSource;
-            this.dgvFiles.Location = new System.Drawing.Point(12, 56);
+            this.dgvFiles.Location = new System.Drawing.Point(12, 81);
             this.dgvFiles.MultiSelect = false;
             this.dgvFiles.Name = "dgvFiles";
             this.dgvFiles.RowHeadersVisible = false;
             this.dgvFiles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvFiles.Size = new System.Drawing.Size(1157, 452);
+            this.dgvFiles.Size = new System.Drawing.Size(1157, 523);
             this.dgvFiles.TabIndex = 1;
             this.dgvFiles.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvFiles_CellMouseClick);
             this.dgvFiles.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvFiles_CellMouseDoubleClick);
@@ -236,7 +239,7 @@
             // 
             // bnBrowseRootFolder
             // 
-            this.bnBrowseRootFolder.Location = new System.Drawing.Point(805, 27);
+            this.bnBrowseRootFolder.Location = new System.Drawing.Point(801, 52);
             this.bnBrowseRootFolder.Name = "bnBrowseRootFolder";
             this.bnBrowseRootFolder.Size = new System.Drawing.Size(75, 23);
             this.bnBrowseRootFolder.TabIndex = 2;
@@ -246,7 +249,7 @@
             // 
             // tbRootFolder
             // 
-            this.tbRootFolder.Location = new System.Drawing.Point(84, 29);
+            this.tbRootFolder.Location = new System.Drawing.Point(80, 54);
             this.tbRootFolder.Name = "tbRootFolder";
             this.tbRootFolder.ReadOnly = true;
             this.tbRootFolder.Size = new System.Drawing.Size(715, 20);
@@ -255,7 +258,7 @@
             // lRootFolder
             // 
             this.lRootFolder.AutoSize = true;
-            this.lRootFolder.Location = new System.Drawing.Point(12, 32);
+            this.lRootFolder.Location = new System.Drawing.Point(8, 57);
             this.lRootFolder.Name = "lRootFolder";
             this.lRootFolder.Size = new System.Drawing.Size(66, 13);
             this.lRootFolder.TabIndex = 4;
@@ -291,13 +294,41 @@
             // 
             // bnRefreshFolder
             // 
-            this.bnRefreshFolder.Location = new System.Drawing.Point(886, 27);
+            this.bnRefreshFolder.Location = new System.Drawing.Point(882, 52);
             this.bnRefreshFolder.Name = "bnRefreshFolder";
             this.bnRefreshFolder.Size = new System.Drawing.Size(75, 23);
             this.bnRefreshFolder.TabIndex = 5;
             this.bnRefreshFolder.Text = "Refresh";
             this.bnRefreshFolder.UseVisualStyleBackColor = true;
             this.bnRefreshFolder.Click += new System.EventHandler(this.bnRefreshFolder_Click);
+            // 
+            // lContext
+            // 
+            this.lContext.AutoSize = true;
+            this.lContext.Location = new System.Drawing.Point(12, 30);
+            this.lContext.Name = "lContext";
+            this.lContext.Size = new System.Drawing.Size(46, 13);
+            this.lContext.TabIndex = 6;
+            this.lContext.Text = "Context:";
+            // 
+            // cbContext
+            // 
+            this.cbContext.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbContext.FormattingEnabled = true;
+            this.cbContext.Location = new System.Drawing.Point(122, 27);
+            this.cbContext.Name = "cbContext";
+            this.cbContext.Size = new System.Drawing.Size(330, 21);
+            this.cbContext.TabIndex = 7;
+            // 
+            // bnCreateNewContext
+            // 
+            this.bnCreateNewContext.Location = new System.Drawing.Point(458, 25);
+            this.bnCreateNewContext.Name = "bnCreateNewContext";
+            this.bnCreateNewContext.Size = new System.Drawing.Size(75, 23);
+            this.bnCreateNewContext.TabIndex = 8;
+            this.bnCreateNewContext.Text = "New...";
+            this.bnCreateNewContext.UseVisualStyleBackColor = true;
+            this.bnCreateNewContext.Click += new System.EventHandler(this.bnCreateNewContext_Click);
             // 
             // checkedDataGridViewCheckBoxColumn
             // 
@@ -341,7 +372,10 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1181, 520);
+            this.ClientSize = new System.Drawing.Size(1181, 616);
+            this.Controls.Add(this.bnCreateNewContext);
+            this.Controls.Add(this.cbContext);
+            this.Controls.Add(this.lContext);
             this.Controls.Add(this.bnRefreshFolder);
             this.Controls.Add(this.lRootFolder);
             this.Controls.Add(this.tbRootFolder);
@@ -403,6 +437,9 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiClearChanges;
         private System.Windows.Forms.Button bnRefreshFolder;
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
+        private System.Windows.Forms.Label lContext;
+        private System.Windows.Forms.ComboBox cbContext;
+        private System.Windows.Forms.Button bnCreateNewContext;
     }
 }
 
