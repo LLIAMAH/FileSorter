@@ -1,12 +1,6 @@
 ﻿using FileSorter.Classes;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace FileSorter.Forms
@@ -28,7 +22,7 @@ namespace FileSorter.Forms
         private void bnOK_Click(object sender, EventArgs e)
         {
             var groupName = tbGroupName.Text;
-            if (String.IsNullOrEmpty(groupName))
+            if (string.IsNullOrEmpty(groupName))
                 return;
 
             foreach (var item in _fileItems)

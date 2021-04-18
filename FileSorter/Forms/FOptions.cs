@@ -1,12 +1,7 @@
 ﻿using FileSorter.Classes;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace FileSorter.Forms
@@ -20,7 +15,8 @@ namespace FileSorter.Forms
 
         private void UpdateOptions(string filterText, string splitterText, DataGridViewRowCollection dataGridViewRowCollection)
         {
-            Dictionary<string, string> folders = new Dictionary<string, string>();
+            var folders = new Dictionary<string, string>();
+            var listExp = new List<Exception>();
             foreach (DataGridViewRow row in dgvFolders.Rows)
             {
                 try
@@ -28,9 +24,18 @@ namespace FileSorter.Forms
                     var key = row.Cells[0].Value as string;
                     var value = row.Cells[1].Value as string;
 
-                    folders.Add(key, value);
+                    folders.Add(key ?? throw new InvalidOperationException(), value);
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    listExp.Add(ex);
+                }
+            }
+
+            if (listExp.Any())
+            {
+                MessageBox.Show($"There is {listExp.Count()} exceptions. Last one: {listExp.Last()}");
+                return;
             }
 
             OptionsManager.WriteData(filterText, splitterText, folders);
@@ -40,10 +45,10 @@ namespace FileSorter.Forms
         {
             var filter = OptionsManager.ReadFilter();
             tbFilter.Text = filter.Key;
-            tbSplitter.Text = string.Empty + filter.Value; // to avoid char to string convertation
+            tbSplitter.Text = string.Empty + filter.Value; // to avoid char to string conversion process
 
             var folders = OptionsManager.ReadFolders();
-            if (folders != null && folders.Count() > 0)
+            if (folders != null && folders.Any())
             {
                 var orderedFolders = folders.OrderBy(o => o.Key);
                 foreach (var item in orderedFolders)
@@ -61,7 +66,6 @@ namespace FileSorter.Forms
         private void bnOK_Click(object sender, EventArgs e)
         {
             UpdateOptions(this.tbFilter.Text, this.tbSplitter.Text, this.dgvFolders.Rows);
-
             DialogResult = DialogResult.OK;
         }
     }
