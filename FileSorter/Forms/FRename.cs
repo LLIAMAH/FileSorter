@@ -1,12 +1,5 @@
 ﻿using FileSorter.Classes;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace FileSorter.Forms
@@ -31,14 +24,13 @@ namespace FileSorter.Forms
             var nameOld = tbOldName.Text;
             var nameNew = tbNewName.Text;
 
-            if (String.IsNullOrEmpty(nameNew))
+            if (string.IsNullOrEmpty(nameNew))
                 return;
 
             if (nameOld.Equals(nameNew))
                 return;
 
             _fileItem.ChangesStatus.Add(new ChangesStatus() { Change = Change.Rename, Name = nameNew, Value = nameNew });
-
             DialogResult = DialogResult.OK;
         }
     }

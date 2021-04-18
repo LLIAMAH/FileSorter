@@ -2,12 +2,7 @@
 using FileSorter.Forms;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace FileSorter
@@ -30,23 +25,22 @@ namespace FileSorter
 
         private void moveTo_Click(object sender, EventArgs e)
         {
-            ToolStripMenuItem clickedItem = (ToolStripMenuItem)sender;
+            ToolStripMenuItem clickedItem = (ToolStripMenuItem) sender;
             if (clickedItem == null)
                 return;
 
-            var path = clickedItem.Tag as String;
-            if (String.IsNullOrEmpty(path))
+            var path = clickedItem.Tag as string;
+            if (string.IsNullOrEmpty(path))
                 return;
 
-            var selected = dgvFiles.SelectedRows[0].DataBoundItem as FileItem;
-            if (selected != null)
+            if (dgvFiles.SelectedRows[0].DataBoundItem is FileItem selected)
             {
                 selected.ChangesStatus.Add(new ChangesStatus()
-                                            {
-                                                Change = Change.Move,
-                                                Name = clickedItem.Text,
-                                                Value = path,
-                                            });
+                {
+                    Change = Change.Move,
+                    Name = clickedItem.Text,
+                    Value = path,
+                });
 
                 dgvFiles.Refresh();
             }
@@ -54,7 +48,7 @@ namespace FileSorter
 
         private void tsmiOptions_Click(object sender, EventArgs e)
         {
-            using (IFormSimple form = new Forms.FOptions())
+            using (IFormSimple form = new FOptions())
             {
                 if (form.ShowDialog() == DialogResult.OK)
                 {
@@ -95,7 +89,6 @@ namespace FileSorter
             if(fbdBroseRootFolder.ShowDialog() == DialogResult.OK)
             {
                 tbRootFolder.Text = fbdBroseRootFolder.SelectedPath;
-
                 RefreshDataGridView();
             }
         }
@@ -104,35 +97,36 @@ namespace FileSorter
         {
             if (e.Button == MouseButtons.Left && e.Clicks == 2)
             {
-                var dgv = sender as DataGridView;
-
-                if (dgv == null)
+                if (!(sender is DataGridView dgv))
                     return;
 
                 if (e.RowIndex < 0 && e.RowIndex > dgv.RowCount - 1)
                     return;
 
-                var row = dgv.SelectedRows[0].DataBoundItem as FileItem;
-                if (row == null)
+                if (!(dgv.SelectedRows[0].DataBoundItem is FileItem row))
                     return;
 
                 OpenFileInStandardApp(row.FullName);
             }
         }
 
-        private void OpenFileInStandardApp(string fullFileName)
+        private static void OpenFileInStandardApp(string fullFileName)
         {
-            System.Diagnostics.Process process = new System.Diagnostics.Process();
-            process.StartInfo.FileName = fullFileName;
-            process.StartInfo.Verb = "Open";
-            process.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
+            var process = new System.Diagnostics.Process
+            {
+                StartInfo =
+                {
+                    FileName = fullFileName,
+                    Verb = "Open",
+                    WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal
+                }
+            };
             process.Start();
         }
 
         private void tsmiOpen_Click(object sender, EventArgs e)
         {
-            var row = dgvFiles.SelectedRows[0].DataBoundItem as FileItem;
-            if (row == null)
+            if (!(dgvFiles.SelectedRows[0].DataBoundItem is FileItem row))
                 return;
 
             OpenFileInStandardApp(row.FullName);
@@ -142,22 +136,20 @@ namespace FileSorter
         {
             if (e.Button == MouseButtons.Right)
             {
-                System.Drawing.Point pt = dgvFiles.PointToClient(Cursor.Position);
-                DataGridView.HitTestInfo test = dgvFiles.HitTest(pt.X, pt.Y);
+                var pt = dgvFiles.PointToClient(Cursor.Position);
+                var test = dgvFiles.HitTest(pt.X, pt.Y);
 
                 if (test.RowIndex < 0 || test.ColumnIndex < 0)
                     return;
 
                 dgvFiles.Rows[test.RowIndex].Selected = true;
-
                 cmsFileListMenu.Show(dgvFiles, dgvFiles.PointToClient(Cursor.Position));
             }
         }
 
         private void tsmiRename_Click(object sender, EventArgs e)
         {
-            var selected = dgvFiles.SelectedRows[0].DataBoundItem as FileItem;
-            if (selected == null)
+            if (!(dgvFiles.SelectedRows[0].DataBoundItem is FileItem selected))
                 return;
 
             using(var dlg = new FRename())
@@ -170,19 +162,18 @@ namespace FileSorter
 
         private void tsmiAddAttachment_Click(object sender, EventArgs e)
         {
-            var selected = dgvFiles.SelectedRows[0].DataBoundItem as FileItem;
-            if (selected == null)
+            if (!(dgvFiles.SelectedRows[0].DataBoundItem is FileItem selected))
                 return;
 
-            if(ofdAttachment.ShowDialog() == DialogResult.OK)
+            if (ofdAttachment.ShowDialog() == DialogResult.OK)
             {
                 IFileAttachment value = new FileItem(ofdAttachment.FileName);
                 selected.ChangesStatus.Add(new ChangesStatus()
-                                            {
-                                                Change = Change.AttachmentAdded,
-                                                Name = value.FileName,
-                                                Value = value,
-                                            });
+                {
+                    Change = Change.AttachmentAdded,
+                    Name = value.FileName,
+                    Value = value,
+                });
 
                 dgvFiles.Refresh();
             }
@@ -195,7 +186,7 @@ namespace FileSorter
             foreach (DataGridViewRow row in dgvFiles.Rows)
             {
                 var fileData = row.DataBoundItem as IFileItem;                
-                if (fileData.Checked)
+                if (fileData != null && fileData.Checked)
                     fileItems.Add(fileData);
             }
 
@@ -210,12 +201,12 @@ namespace FileSorter
             CheckAll(dgvFiles);
         }
 
-        private void CheckAll(DataGridView dgvFiles)
+        private static void CheckAll(DataGridView dgvFiles)
         {
             foreach (DataGridViewRow row in dgvFiles.Rows)
             {
-                var fileData = row.DataBoundItem as IFileItem;
-                fileData.Checked = true;
+                if (row.DataBoundItem is IFileItem fileData)
+                    fileData.Checked = true;
             }
 
             dgvFiles.Refresh();
@@ -230,35 +221,24 @@ namespace FileSorter
         {
             foreach (DataGridViewRow row in dgvFiles.Rows)
                 row.Cells[checkedDataGridViewCheckBoxColumn.Index].Value = false;
-
-            //foreach (DataGridViewRow row in dgvFiles.Rows)
-            //{
-            //    var fileData = row.DataBoundItem as IFileItem;
-            //    fileData.Checked = false;
-            //}
-
-            //dgvFiles.Refresh();
         }
 
         private void tsmiProcess_Click(object sender, EventArgs e)
         {
-            List<IFileItem> files = new List<IFileItem>();
+            var files = new List<IFileItem>();
             foreach (DataGridViewRow row in dgvFiles.Rows)
             {
-                var fileData = row.DataBoundItem as IFileItem;
-                if (fileData != null)
+                if (row.DataBoundItem is IFileItem fileData)
                     files.Add(fileData);
             }
 
             FileManager.Process(files);
-
             RefreshDataGridView();
         }
 
         private void tsmiClearChanges_Click(object sender, EventArgs e)
         {
-            var selected = dgvFiles.SelectedRows[0].DataBoundItem as FileItem;
-            if (selected == null)
+            if (!(dgvFiles.SelectedRows[0].DataBoundItem is FileItem selected))
                 return;
 
             selected.ChangesStatus.Clear();
@@ -273,15 +253,12 @@ namespace FileSorter
         private void dgvFiles_CurrentCellDirtyStateChanged(object sender, EventArgs e)
         {
             if (this.dgvFiles.CurrentCell.OwningColumn.Index == checkedDataGridViewCheckBoxColumn.Index)
-            {
                 this.dgvFiles.CommitEdit(DataGridViewDataErrorContexts.Commit);
-            }
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var selected = dgvFiles.SelectedRows[0].DataBoundItem as IFileItem;
-            if (selected == null)
+            if (!(dgvFiles.SelectedRows[0].DataBoundItem is IFileItem selected))
                 return;
 
             selected.ChangesStatus.Clear();
