@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Configuration;
 using System.Xml.Linq;
 using System.IO;
 
@@ -14,15 +11,15 @@ namespace FileSorter.Classes
         public const string Constant = "<empty>";
         private const string _fileConfigName = @"Data\AppConfiguration.xml";
 
-        internal static Dictionary<String, String> ReadFolders()
+        internal static Dictionary<string, string> ReadFolders()
         {
             var document = OpenDocument();
-            var folder = document.Root.Elements("Folders");
-            var folders = folder.Elements("Folder");
+            var folder = document?.Root?.Elements("Folders");
+            var folders = folder?.Elements("Folder");
 
             var result = new Dictionary<string, string>();
             foreach(var item in folders)
-                result.Add(item.Attribute("name").Value, item.Attribute("path").Value);
+                result.Add(item.Attribute("name")?.Value, item.Attribute("path")?.Value);
             
             return result;
         }
@@ -48,7 +45,7 @@ namespace FileSorter.Classes
             var doc = new XDocument(
                 new XDeclaration("1.0", "utf-8", "yes"),
                 new XElement(XName.Get("AppConfiguration"),
-                new XElement[]
+                new object[]
                     {
                         new XElement(XName.Get("Filter"), new XAttribute(XName.Get("value"), ""),  new XAttribute(XName.Get("splitter"), ";")),
                         new XElement(XName.Get("Folders"))
@@ -60,10 +57,9 @@ namespace FileSorter.Classes
         internal static KeyValuePair<string, char> ReadFilter()
         {
             var document = OpenDocument();
-            var element = document.Root.Elements("Filter");
+            var element = document?.Root?.Elements("Filter");
             var value = element.Attributes("value").SingleOrDefault();
             var splitter = element.Attributes("splitter").SingleOrDefault();
-
 
             if (value == null && splitter == null)
                 return new KeyValuePair<string, char>(Constant, ' ');
@@ -78,9 +74,9 @@ namespace FileSorter.Classes
         internal static void WriteData(string filterText, string splitterText, Dictionary<string, string> updatedFolders)
         {
             var document = OpenDocument();
-            var element = document.Root.Elements("Filter").SingleOrDefault();
+            var element = document?.Root?.Elements("Filter").SingleOrDefault();
             if(element == null)
-                document.Root.Add(new XElement(XName.Get("Filter"), new XAttribute(XName.Get("value"), ""), new XAttribute(XName.Get("splitter"), "")));
+                document?.Root?.Add(new XElement(XName.Get("Filter"), new XAttribute(XName.Get("value"), ""), new XAttribute(XName.Get("splitter"), "")));
 
             var value = element.Attributes("value").SingleOrDefault();
             var splitter = element.Attributes("splitter").SingleOrDefault();

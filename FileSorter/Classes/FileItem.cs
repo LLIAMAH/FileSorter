@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FileSorter.Classes
 {
@@ -17,7 +15,7 @@ namespace FileSorter.Classes
         {
             get
             {
-                if(String.IsNullOrEmpty(this.FullName))
+                if(string.IsNullOrEmpty(this.FullName))
                     return string.Empty;
 
                 var fi = new FileInfo(this.FullName);
@@ -29,32 +27,17 @@ namespace FileSorter.Classes
         {
             get
             {
-                if (String.IsNullOrEmpty(this.FullName))
+                if (string.IsNullOrEmpty(this.FullName))
                     return string.Empty;
 
                 var fi = new FileInfo(this.FullName);
                 var di = fi.Directory;
-                return di.FullName;
+                return di?.FullName;
             }
         }
-        public ChangesStatusCollection ChangesStatus
-        {
-            get
-            {
-                if (_changesStatus == null)
-                    _changesStatus = new ChangesStatusCollection();
+        public ChangesStatusCollection ChangesStatus => _changesStatus ?? (_changesStatus = new ChangesStatusCollection());
 
-                return _changesStatus;
-            }
-        }
-
-        public string Changes
-        {
-            get
-            {
-                return this.ChangesStatus.ToString();
-            }
-        }
+        public string Changes => this.ChangesStatus.ToString();
 
         public FileItem()
         {
@@ -86,7 +69,7 @@ namespace FileSorter.Classes
 
         public override string ToString()
         {
-            return string.Format("{0}{1}", this.FileName, this.Extension);
+            return $"{this.FileName}{this.Extension}";
         }
 
         private static string GetFileName(string fullName)
@@ -94,17 +77,17 @@ namespace FileSorter.Classes
             var fi = new FileInfo(fullName);
             var fileNameFull = fi.Name;
 
-            var fileNameSplitted = fileNameFull.Split(new char[] { '.' });
-            switch (fileNameSplitted.Length)
+            var fileNameSeparated = fileNameFull.Split(new char[] { '.' });
+            switch (fileNameSeparated.Length)
             {
-                case 1: return fileNameSplitted[0];
-                case 2: return fileNameSplitted[0];
+                case 1: return fileNameSeparated[0];
+                case 2: return fileNameSeparated[0];
                 case 0: throw new Exception("Problem in name detection");
                 default:
                     {
-                        string result = string.Empty;
-                        for (int i = 0; i < fileNameSplitted.Length - 1; i++)
-                            result += String.Format("{0}.", fileNameSplitted[i]);
+                        var result = string.Empty;
+                        for (var i = 0; i < fileNameSeparated.Length - 1; i++)
+                            result += string.Format("{0}.", fileNameSeparated[i]);
 
                         result = result.TrimEnd(new char[] { '.' });
                         return result;
@@ -114,7 +97,7 @@ namespace FileSorter.Classes
 
         public bool HasRename
         {
-            get { return this.ChangesStatus.Where(o => o.Change == Change.Rename).FirstOrDefault() != null; }
+            get { return this.ChangesStatus.FirstOrDefault(o => o.Change == Change.Rename) != null; }
         }
     }
 
@@ -122,7 +105,7 @@ namespace FileSorter.Classes
     {
         public new void Add(ChangesStatus item)
         {
-            var res = this.Where(o => o.Change == item.Change).SingleOrDefault();
+            var res = this.SingleOrDefault(o => o.Change == item.Change);
             if (res == null)
             {
                 base.Add(item);
@@ -136,18 +119,16 @@ namespace FileSorter.Classes
         public override string ToString()
         {
             if (this.Count == 0)
-                return String.Empty;
+                return string.Empty;
 
             if (this.Count == 1)
                 return this.First().ToString();
 
-            var result = string.Empty;
-            foreach (var item in this)
-                result += String.Format("{0}; ", item.ToString());
+            var result = this.Aggregate(string.Empty, (current, item) => current + $"{item}; ");
 
             result = result.TrimEnd(new char[] { ';', ' ' });
 
-            return String.Format("{0}.", result);
+            return $"{result}.";
         }
     }
 
@@ -188,7 +169,7 @@ namespace FileSorter.Classes
 
         public override string ToString()
         {
-            return String.Format("{0}: \"{1}\"", GetString(this.Change), this.Name.ToString());
+            return $"{GetString(this.Change)}: \"{this.Name}\"";
         }
 
         private static string GetString(Change change)
@@ -209,16 +190,7 @@ namespace FileSorter.Classes
     public class FilesContext
     {
         private static List<FileItem> _files = null;
-        public static List<FileItem> Files
-        {
-            get
-            {
-                if (_files == null)
-                    _files = new List<FileItem>();
-
-                return _files;
-            }
-        }
+        public static List<FileItem> Files => _files ?? (_files = new List<FileItem>());
 
         public static List<FileItem> RefreshFiles(string filter, string rootFolder)
         {
@@ -234,11 +206,7 @@ namespace FileSorter.Classes
 
         private static List<FileItem> ApplyFiles(List<FileInfo> list)
         {
-            var result = new List<FileItem>();
-            foreach(var item in list)
-                result.Add(new FileItem(item));
-
-            return result;
+            return list.Select(item => new FileItem(item)).ToList();
         }
 
         private static List<FileInfo> GetFiles(string filter, DirectoryInfo di)
@@ -249,7 +217,7 @@ namespace FileSorter.Classes
             try
             {
                 directories = di.GetDirectories();
-                if (directories.Count() == 0)
+                if (!directories.Any())
                 {
                     list.AddRange(FilteredList(filter, di.GetFiles()));
                     return list;
@@ -272,18 +240,12 @@ namespace FileSorter.Classes
         private static List<FileInfo> FilteredList(string filter, FileInfo[] fileInfo)
         {
             var parsedFilter = filter.Split(new char[] { ';' });
-            var listParsedFilter = new List<String>();
-            foreach (var item in parsedFilter)
-                listParsedFilter.Add(item.Trim());
+            var listParsedFilter = parsedFilter.Select(item => item.Trim()).ToList();
 
             var result = new List<FileInfo>();
             foreach(var file in fileInfo)
             {
-                foreach(var item in listParsedFilter)
-                {
-                    if (file.Extension.Equals(String.Format(".{0}",item), StringComparison.OrdinalIgnoreCase))
-                        result.Add(file);
-                }
+                result.AddRange(from item in listParsedFilter where file.Extension.Equals($".{item}", StringComparison.OrdinalIgnoreCase) select file);
             }
 
             return result;

@@ -23,8 +23,10 @@ namespace FileSorter.Forms
                 {
                     var key = row.Cells[0].Value as string;
                     var value = row.Cells[1].Value as string;
+                    if(string.IsNullOrEmpty(key)|| string.IsNullOrEmpty(value))
+                        continue;
 
-                    folders.Add(key ?? throw new InvalidOperationException(), value);
+                    folders.Add(key, value);
                 }
                 catch (Exception ex)
                 {
