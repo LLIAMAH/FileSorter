@@ -2,6 +2,7 @@
 using FileSorter.Forms;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -294,6 +295,14 @@ namespace FileSorter
             });
 
             dgvFiles.Refresh();
+        }
+
+        private void tsmiOpenFolder_Click(object sender, EventArgs e)
+        {
+            if (!(dgvFiles.SelectedRows[0].DataBoundItem is FileItem row))
+                return;
+            
+            Process.Start(new DirectoryInfo(row.FullName)?.Parent?.FullName);
         }
     }
 }

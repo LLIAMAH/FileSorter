@@ -56,14 +56,16 @@
             this.ofdAttachment = new System.Windows.Forms.OpenFileDialog();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.bnRefreshFolder = new System.Windows.Forms.Button();
-            this.fileItemBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.filesContextBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.ParentDir = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Changes = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.checkedDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.fileNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.extensionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ParentDir = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Changes = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.fullNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.fileItemBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.filesContextBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.tsmiOpenFolder = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.msMainMenu.SuspendLayout();
             this.cmsFileListMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFiles)).BeginInit();
@@ -80,14 +82,14 @@
             this.optionsToolStripMenuItem});
             this.msMainMenu.Location = new System.Drawing.Point(0, 0);
             this.msMainMenu.Name = "msMainMenu";
-            this.msMainMenu.Size = new System.Drawing.Size(1772, 36);
+            this.msMainMenu.Size = new System.Drawing.Size(1772, 35);
             this.msMainMenu.TabIndex = 0;
             this.msMainMenu.Text = "menuStrip1";
             // 
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(54, 30);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(54, 29);
             this.fileToolStripMenuItem.Text = "&File";
             // 
             // optionsToolStripMenuItem
@@ -95,7 +97,7 @@
             this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiOptions});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(92, 30);
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(92, 29);
             this.optionsToolStripMenuItem.Text = "Options";
             // 
             // tsmiOptions
@@ -110,6 +112,8 @@
             this.cmsFileListMenu.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.cmsFileListMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiOpen,
+            this.tsmiOpenFolder,
+            this.toolStripMenuItem1,
             this.tsmiMoveTo,
             this.tsmiAddAttachment,
             this.tsmiCreateGroup,
@@ -122,84 +126,84 @@
             this.tsmiCheckAll,
             this.tsmiUncheckAll});
             this.cmsFileListMenu.Name = "cmsFileListMenu";
-            this.cmsFileListMenu.Size = new System.Drawing.Size(225, 336);
+            this.cmsFileListMenu.Size = new System.Drawing.Size(241, 407);
             // 
             // tsmiOpen
             // 
             this.tsmiOpen.Name = "tsmiOpen";
-            this.tsmiOpen.Size = new System.Drawing.Size(224, 32);
+            this.tsmiOpen.Size = new System.Drawing.Size(240, 32);
             this.tsmiOpen.Text = "Open";
             this.tsmiOpen.Click += new System.EventHandler(this.tsmiOpen_Click);
             // 
             // tsmiMoveTo
             // 
             this.tsmiMoveTo.Name = "tsmiMoveTo";
-            this.tsmiMoveTo.Size = new System.Drawing.Size(224, 32);
+            this.tsmiMoveTo.Size = new System.Drawing.Size(240, 32);
             this.tsmiMoveTo.Text = "&Move to...";
             // 
             // tsmiAddAttachment
             // 
             this.tsmiAddAttachment.Name = "tsmiAddAttachment";
-            this.tsmiAddAttachment.Size = new System.Drawing.Size(224, 32);
+            this.tsmiAddAttachment.Size = new System.Drawing.Size(240, 32);
             this.tsmiAddAttachment.Text = "Add &attachment...";
             this.tsmiAddAttachment.Click += new System.EventHandler(this.tsmiAddAttachment_Click);
             // 
             // tsmiCreateGroup
             // 
             this.tsmiCreateGroup.Name = "tsmiCreateGroup";
-            this.tsmiCreateGroup.Size = new System.Drawing.Size(224, 32);
+            this.tsmiCreateGroup.Size = new System.Drawing.Size(240, 32);
             this.tsmiCreateGroup.Text = "Create &group...";
             this.tsmiCreateGroup.Click += new System.EventHandler(this.tsmiCreateGroup_Click);
             // 
             // tsmiRename
             // 
             this.tsmiRename.Name = "tsmiRename";
-            this.tsmiRename.Size = new System.Drawing.Size(224, 32);
+            this.tsmiRename.Size = new System.Drawing.Size(240, 32);
             this.tsmiRename.Text = "Rename...";
             this.tsmiRename.Click += new System.EventHandler(this.tsmiRename_Click);
             // 
             // tsmiClearChanges
             // 
             this.tsmiClearChanges.Name = "tsmiClearChanges";
-            this.tsmiClearChanges.Size = new System.Drawing.Size(224, 32);
+            this.tsmiClearChanges.Size = new System.Drawing.Size(240, 32);
             this.tsmiClearChanges.Text = "Clear changes";
             this.tsmiClearChanges.Click += new System.EventHandler(this.tsmiClearChanges_Click);
             // 
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(224, 32);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(240, 32);
             this.deleteToolStripMenuItem.Text = "Delete";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
             // tsmiSplit1
             // 
             this.tsmiSplit1.Name = "tsmiSplit1";
-            this.tsmiSplit1.Size = new System.Drawing.Size(221, 6);
+            this.tsmiSplit1.Size = new System.Drawing.Size(237, 6);
             // 
             // tsmiProcess
             // 
             this.tsmiProcess.Name = "tsmiProcess";
-            this.tsmiProcess.Size = new System.Drawing.Size(224, 32);
+            this.tsmiProcess.Size = new System.Drawing.Size(240, 32);
             this.tsmiProcess.Text = "Process";
             this.tsmiProcess.Click += new System.EventHandler(this.tsmiProcess_Click);
             // 
             // tsmiSplit2
             // 
             this.tsmiSplit2.Name = "tsmiSplit2";
-            this.tsmiSplit2.Size = new System.Drawing.Size(221, 6);
+            this.tsmiSplit2.Size = new System.Drawing.Size(237, 6);
             // 
             // tsmiCheckAll
             // 
             this.tsmiCheckAll.Name = "tsmiCheckAll";
-            this.tsmiCheckAll.Size = new System.Drawing.Size(224, 32);
+            this.tsmiCheckAll.Size = new System.Drawing.Size(240, 32);
             this.tsmiCheckAll.Text = "Check All";
             this.tsmiCheckAll.Click += new System.EventHandler(this.tsmiCheckAll_Click);
             // 
             // tsmiUncheckAll
             // 
             this.tsmiUncheckAll.Name = "tsmiUncheckAll";
-            this.tsmiUncheckAll.Size = new System.Drawing.Size(224, 32);
+            this.tsmiUncheckAll.Size = new System.Drawing.Size(240, 32);
             this.tsmiUncheckAll.Text = "Uncheck All";
             this.tsmiUncheckAll.Click += new System.EventHandler(this.tsmiUncheckAll_Click);
             // 
@@ -305,13 +309,23 @@
             this.bnRefreshFolder.UseVisualStyleBackColor = true;
             this.bnRefreshFolder.Click += new System.EventHandler(this.bnRefreshFolder_Click);
             // 
-            // fileItemBindingSource
+            // ParentDir
             // 
-            this.fileItemBindingSource.DataSource = typeof(FileSorter.Classes.FileItem);
+            this.ParentDir.DataPropertyName = "ParentDir";
+            this.ParentDir.HeaderText = "ParentDir";
+            this.ParentDir.MinimumWidth = 8;
+            this.ParentDir.Name = "ParentDir";
+            this.ParentDir.ReadOnly = true;
+            this.ParentDir.Width = 150;
             // 
-            // filesContextBindingSource
+            // Changes
             // 
-            this.filesContextBindingSource.DataSource = typeof(FileSorter.Classes.FilesContext);
+            this.Changes.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Changes.DataPropertyName = "Changes";
+            this.Changes.HeaderText = "Changes";
+            this.Changes.MinimumWidth = 8;
+            this.Changes.Name = "Changes";
+            this.Changes.ReadOnly = true;
             // 
             // checkedDataGridViewCheckBoxColumn
             // 
@@ -339,24 +353,6 @@
             this.extensionDataGridViewTextBoxColumn.ReadOnly = true;
             this.extensionDataGridViewTextBoxColumn.Width = 60;
             // 
-            // ParentDir
-            // 
-            this.ParentDir.DataPropertyName = "ParentDir";
-            this.ParentDir.HeaderText = "ParentDir";
-            this.ParentDir.MinimumWidth = 8;
-            this.ParentDir.Name = "ParentDir";
-            this.ParentDir.ReadOnly = true;
-            this.ParentDir.Width = 150;
-            // 
-            // Changes
-            // 
-            this.Changes.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Changes.DataPropertyName = "Changes";
-            this.Changes.HeaderText = "Changes";
-            this.Changes.MinimumWidth = 8;
-            this.Changes.Name = "Changes";
-            this.Changes.ReadOnly = true;
-            // 
             // fullNameDataGridViewTextBoxColumn
             // 
             this.fullNameDataGridViewTextBoxColumn.DataPropertyName = "FullName";
@@ -365,6 +361,26 @@
             this.fullNameDataGridViewTextBoxColumn.Name = "fullNameDataGridViewTextBoxColumn";
             this.fullNameDataGridViewTextBoxColumn.Visible = false;
             this.fullNameDataGridViewTextBoxColumn.Width = 150;
+            // 
+            // fileItemBindingSource
+            // 
+            this.fileItemBindingSource.DataSource = typeof(FileSorter.Classes.FileItem);
+            // 
+            // filesContextBindingSource
+            // 
+            this.filesContextBindingSource.DataSource = typeof(FileSorter.Classes.FilesContext);
+            // 
+            // tsmiOpenFolder
+            // 
+            this.tsmiOpenFolder.Name = "tsmiOpenFolder";
+            this.tsmiOpenFolder.Size = new System.Drawing.Size(240, 32);
+            this.tsmiOpenFolder.Text = "Open Folder";
+            this.tsmiOpenFolder.Click += new System.EventHandler(this.tsmiOpenFolder_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(237, 6);
             // 
             // FMain
             // 
@@ -434,6 +450,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ParentDir;
         private System.Windows.Forms.DataGridViewTextBoxColumn Changes;
         private System.Windows.Forms.DataGridViewTextBoxColumn fullNameDataGridViewTextBoxColumn;
+        private System.Windows.Forms.ToolStripMenuItem tsmiOpenFolder;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
     }
 }
 
