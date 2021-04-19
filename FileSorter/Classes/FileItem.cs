@@ -23,6 +23,7 @@ namespace FileSorter.Classes
             }
         }
         public string FullName { get; set; }
+        public string ParentDir { get; set; }
         public string PathDirectory
         {
             get
@@ -49,6 +50,7 @@ namespace FileSorter.Classes
             Checked = false;
             FullName = item.FullName;
             FileName = GetFileName(this.FullName);
+            ParentDir = GetParentDirectory(this.FullName);
         }
 
         public FileItem(string pathToFile)
@@ -56,13 +58,15 @@ namespace FileSorter.Classes
             Checked = false;
             FullName = pathToFile;
             FileName = GetFileName(this.FullName);
+            ParentDir = GetParentDirectory(this.FullName);
         }
 
-        public FileItem(string pathToFile, IEnumerable<Classes.ChangesStatus> changes)
+        public FileItem(string pathToFile, IEnumerable<ChangesStatus> changes)
         {
             Checked = false;
             FullName = pathToFile;
             FileName = GetFileName(this.FullName);
+            ParentDir = GetParentDirectory(this.FullName);
             foreach (var item in changes)
                 this.ChangesStatus.Add(item);
         }
@@ -87,12 +91,18 @@ namespace FileSorter.Classes
                     {
                         var result = string.Empty;
                         for (var i = 0; i < fileNameSeparated.Length - 1; i++)
-                            result += string.Format("{0}.", fileNameSeparated[i]);
+                            result += $"{fileNameSeparated[i]}.";
 
                         result = result.TrimEnd(new char[] { '.' });
                         return result;
                     }
             }
+        }
+
+        private static string GetParentDirectory(string fullName)
+        {
+            var di = new DirectoryInfo(fullName);
+            return di?.Parent?.Name;
         }
 
         public bool HasRename
@@ -137,6 +147,7 @@ namespace FileSorter.Classes
         bool Checked { get; set; }
         string FileName { get; set; }
         string Extension { get; }
+        string ParentDir { get; set; }
         string FullName { get; set; }
         string PathDirectory { get; }
         string Changes { get; }
@@ -194,10 +205,10 @@ namespace FileSorter.Classes
 
         public static List<FileItem> RefreshFiles(string filter, string rootFolder)
         {
-            if (String.IsNullOrEmpty(rootFolder))
+            if (string.IsNullOrEmpty(rootFolder))
                 return new List<FileItem>();
 
-            DirectoryInfo di = new DirectoryInfo(rootFolder);
+            var di = new DirectoryInfo(rootFolder);
             if (!di.Exists)
                 return new List<FileItem>();
 
@@ -243,10 +254,11 @@ namespace FileSorter.Classes
             var listParsedFilter = parsedFilter.Select(item => item.Trim()).ToList();
 
             var result = new List<FileInfo>();
-            foreach(var file in fileInfo)
-            {
-                result.AddRange(from item in listParsedFilter where file.Extension.Equals($".{item}", StringComparison.OrdinalIgnoreCase) select file);
-            }
+            foreach (var file in fileInfo)
+                result.AddRange(
+                    from item in listParsedFilter
+                    where file.Extension.Equals($".{item}", StringComparison.OrdinalIgnoreCase)
+                    select file);
 
             return result;
         }
