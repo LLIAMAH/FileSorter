@@ -2,6 +2,7 @@
 using FileSorter.Forms;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -76,10 +77,34 @@ namespace FileSorter
             _splitter = filter.Value;
 
             var folders = OptionsManager.ReadFolders();
+            CreateContextMenu(folders);
+        }
+
+        private void CreateContextMenu(Dictionary<string, string> folders)
+        {
             foreach (var item in folders.OrderBy(o => o.Key))
             {
+                var dir = new DirectoryInfo(item.Value);
+                var subDirs = dir.GetDirectories();
+                var list = new List<ToolStripItem>();
                 var menuItem = new ToolStripMenuItem(item.Key) { Tag = item.Value };
-                menuItem.Click += moveTo_Click;
+                if (subDirs.Any())
+                {
+                    list.Add(new ToolStripMenuItem(".") {Tag = item.Value});
+                    list.Add(new ToolStripSeparator());
+                    foreach (var directoryInfo in subDirs)
+                    {
+                        var mi = new ToolStripMenuItem(directoryInfo.Name) { Tag = directoryInfo.FullName };
+                        mi.Click += moveTo_Click;
+                        list.Add(mi);
+                    }
+                    menuItem.DropDownItems.AddRange(list.ToArray());
+                }
+                else
+                {
+                    menuItem.Click += moveTo_Click;
+                }
+
                 tsmiMoveTo.DropDownItems.Add(menuItem);
             }
         }
