@@ -150,8 +150,6 @@ namespace FileSorter.Classes
         string ParentDir { get; set; }
         string FullName { get; set; }
         string PathDirectory { get; }
-        string Changes { get; }
-        ChangesStatusCollection ChangesStatus { get; }
     }
 
     public interface IFileAttachment
@@ -203,21 +201,21 @@ namespace FileSorter.Classes
         private static List<FileItem> _files = null;
         public static List<FileItem> Files => _files ?? (_files = new List<FileItem>());
 
-        public static List<FileItem> RefreshFiles(string filter, string rootFolder)
+        public static List<IFileItem> RefreshFiles(string filter, string rootFolder)
         {
             if (string.IsNullOrEmpty(rootFolder))
-                return new List<FileItem>();
+                return new List<IFileItem>();
 
             var di = new DirectoryInfo(rootFolder);
             if (!di.Exists)
-                return new List<FileItem>();
+                return new List<IFileItem>();
 
             return ApplyFiles(GetFiles(filter, di));
         }
 
-        private static List<FileItem> ApplyFiles(List<FileInfo> list)
+        private static List<IFileItem> ApplyFiles(List<FileInfo> list)
         {
-            return list.Select(item => new FileItem(item)).ToList();
+            return new List<IFileItem>(list.Select(item => new FileItem(item)).ToList());
         }
 
         private static List<FileInfo> GetFiles(string filter, DirectoryInfo di)

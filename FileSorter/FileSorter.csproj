@@ -45,8 +45,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\FileItem.cs" />
-    <Compile Include="Classes\FileManager.cs" />
+    <Compile Include="Classes\FileMgr.cs" />
     <Compile Include="Classes\OptionsManager.cs" />
+    <Compile Include="Ctrl\TreeNodeEx.cs" />
     <Compile Include="FMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -105,6 +106,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <None Include="Properties\DataSources\FileSorter.Classes.FileItem.datasource" />
+    <None Include="Properties\DataSources\FileSorter.Classes.IFileItem.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

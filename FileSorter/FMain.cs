@@ -17,11 +17,6 @@ namespace FileSorter
         public FMain()
         {
             InitializeComponent();
-            LoadOptions();
-        }
-
-        private void LoadOptions()
-        {
             ReloadOptions();
         }
 
@@ -56,14 +51,8 @@ namespace FileSorter
                 {
                     ClearMenuItems();
                     ReloadOptions();
-                    RefreshDataGridView();
                 }
             }
-        }
-
-        private void RefreshDataGridView()
-        {
-            dgvFiles.DataSource = Classes.FilesContext.RefreshFiles(_filter, tbRootFolder.Text);
         }
 
         private void ClearMenuItems()
@@ -91,14 +80,9 @@ namespace FileSorter
                 var menuItem = new ToolStripMenuItem(item.Key) { Tag = item.Value };
                 if (subDirs.Any())
                 {
-                    list.Add(new ToolStripMenuItem(".") {Tag = item.Value});
+                    list.Add(CreateMoveToItem("<root>", item.Value));
                     list.Add(new ToolStripSeparator());
-                    foreach (var directoryInfo in subDirs)
-                    {
-                        var mi = new ToolStripMenuItem(directoryInfo.Name) { Tag = directoryInfo.FullName };
-                        mi.Click += moveTo_Click;
-                        list.Add(mi);
-                    }
+                    list.AddRange(subDirs.Select(directoryInfo => CreateMoveToItem(directoryInfo.Name, directoryInfo.FullName)));
                     menuItem.DropDownItems.AddRange(list.ToArray());
                 }
                 else
@@ -110,13 +94,36 @@ namespace FileSorter
             }
         }
 
+        private ToolStripItem CreateMoveToItem(string text, string path)
+        {
+            var mi = new ToolStripMenuItem(text) {Tag = path};
+            mi.Click += moveTo_Click;
+            return mi;
+        }
+
         private void bnBrowseRootFolder_Click(object sender, EventArgs e)
         {
             if(fbdBroseRootFolder.ShowDialog() == DialogResult.OK)
             {
                 tbRootFolder.Text = fbdBroseRootFolder.SelectedPath;
-                RefreshDataGridView();
+                var files = FileMgr.GetFiles(tbRootFolder.Text);
+
+                tvFiles.Nodes.AddRange(files.CreateNodes());
             }
+        }
+
+        private List<TreeNode> GetData(string filePath)
+        {
+            var result = new List<TreeNode>();
+            var dir = new DirectoryInfo(filePath);
+            foreach (var directoryInfo in dir.GetDirectories())
+            {
+                foreach (var VARIABLE in COLLECTION)
+                {
+                    
+                }
+            }
+
         }
 
         private void dgvFiles_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -138,13 +145,13 @@ namespace FileSorter
 
         private static void OpenFileInStandardApp(string fullFileName)
         {
-            var process = new System.Diagnostics.Process
+            var process = new Process
             {
                 StartInfo =
                 {
                     FileName = fullFileName,
                     Verb = "Open",
-                    WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal
+                    WindowStyle = ProcessWindowStyle.Normal
                 }
             };
             process.Start();
@@ -259,7 +266,6 @@ namespace FileSorter
             }
 
             FileManager.Process(files);
-            RefreshDataGridView();
         }
 
         private void tsmiClearChanges_Click(object sender, EventArgs e)
@@ -273,7 +279,6 @@ namespace FileSorter
 
         private void bnRefreshFolder_Click(object sender, EventArgs e)
         {
-            RefreshDataGridView();
         }
 
         private void dgvFiles_CurrentCellDirtyStateChanged(object sender, EventArgs e)

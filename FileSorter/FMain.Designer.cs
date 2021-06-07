@@ -35,6 +35,8 @@
             this.tsmiOptions = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsFileListMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiOpen = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiOpenFolder = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmiMoveTo = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiAddAttachment = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiCreateGroup = new System.Windows.Forms.ToolStripMenuItem();
@@ -46,7 +48,6 @@
             this.tsmiSplit2 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmiCheckAll = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiUncheckAll = new System.Windows.Forms.ToolStripMenuItem();
-            this.dgvFiles = new System.Windows.Forms.DataGridView();
             this.bnBrowseRootFolder = new System.Windows.Forms.Button();
             this.tbRootFolder = new System.Windows.Forms.TextBox();
             this.lRootFolder = new System.Windows.Forms.Label();
@@ -55,22 +56,9 @@
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ofdAttachment = new System.Windows.Forms.OpenFileDialog();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.bnRefreshFolder = new System.Windows.Forms.Button();
-            this.ParentDir = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Changes = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.checkedDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.fileNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.extensionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.fullNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.fileItemBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.filesContextBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.tsmiOpenFolder = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.tvFiles = new System.Windows.Forms.TreeView();
             this.msMainMenu.SuspendLayout();
             this.cmsFileListMenu.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvFiles)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.fileItemBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.filesContextBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // msMainMenu
@@ -82,7 +70,7 @@
             this.optionsToolStripMenuItem});
             this.msMainMenu.Location = new System.Drawing.Point(0, 0);
             this.msMainMenu.Name = "msMainMenu";
-            this.msMainMenu.Size = new System.Drawing.Size(1772, 35);
+            this.msMainMenu.Size = new System.Drawing.Size(1772, 33);
             this.msMainMenu.TabIndex = 0;
             this.msMainMenu.Text = "menuStrip1";
             // 
@@ -126,116 +114,98 @@
             this.tsmiCheckAll,
             this.tsmiUncheckAll});
             this.cmsFileListMenu.Name = "cmsFileListMenu";
-            this.cmsFileListMenu.Size = new System.Drawing.Size(241, 407);
+            this.cmsFileListMenu.Size = new System.Drawing.Size(225, 374);
             // 
             // tsmiOpen
             // 
             this.tsmiOpen.Name = "tsmiOpen";
-            this.tsmiOpen.Size = new System.Drawing.Size(240, 32);
+            this.tsmiOpen.Size = new System.Drawing.Size(224, 32);
             this.tsmiOpen.Text = "Open";
             this.tsmiOpen.Click += new System.EventHandler(this.tsmiOpen_Click);
+            // 
+            // tsmiOpenFolder
+            // 
+            this.tsmiOpenFolder.Name = "tsmiOpenFolder";
+            this.tsmiOpenFolder.Size = new System.Drawing.Size(224, 32);
+            this.tsmiOpenFolder.Text = "Open Folder";
+            this.tsmiOpenFolder.Click += new System.EventHandler(this.tsmiOpenFolder_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(221, 6);
             // 
             // tsmiMoveTo
             // 
             this.tsmiMoveTo.Name = "tsmiMoveTo";
-            this.tsmiMoveTo.Size = new System.Drawing.Size(240, 32);
+            this.tsmiMoveTo.Size = new System.Drawing.Size(224, 32);
             this.tsmiMoveTo.Text = "&Move to...";
             // 
             // tsmiAddAttachment
             // 
             this.tsmiAddAttachment.Name = "tsmiAddAttachment";
-            this.tsmiAddAttachment.Size = new System.Drawing.Size(240, 32);
+            this.tsmiAddAttachment.Size = new System.Drawing.Size(224, 32);
             this.tsmiAddAttachment.Text = "Add &attachment...";
             this.tsmiAddAttachment.Click += new System.EventHandler(this.tsmiAddAttachment_Click);
             // 
             // tsmiCreateGroup
             // 
             this.tsmiCreateGroup.Name = "tsmiCreateGroup";
-            this.tsmiCreateGroup.Size = new System.Drawing.Size(240, 32);
+            this.tsmiCreateGroup.Size = new System.Drawing.Size(224, 32);
             this.tsmiCreateGroup.Text = "Create &group...";
             this.tsmiCreateGroup.Click += new System.EventHandler(this.tsmiCreateGroup_Click);
             // 
             // tsmiRename
             // 
             this.tsmiRename.Name = "tsmiRename";
-            this.tsmiRename.Size = new System.Drawing.Size(240, 32);
+            this.tsmiRename.Size = new System.Drawing.Size(224, 32);
             this.tsmiRename.Text = "Rename...";
             this.tsmiRename.Click += new System.EventHandler(this.tsmiRename_Click);
             // 
             // tsmiClearChanges
             // 
             this.tsmiClearChanges.Name = "tsmiClearChanges";
-            this.tsmiClearChanges.Size = new System.Drawing.Size(240, 32);
+            this.tsmiClearChanges.Size = new System.Drawing.Size(224, 32);
             this.tsmiClearChanges.Text = "Clear changes";
             this.tsmiClearChanges.Click += new System.EventHandler(this.tsmiClearChanges_Click);
             // 
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(240, 32);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(224, 32);
             this.deleteToolStripMenuItem.Text = "Delete";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
             // tsmiSplit1
             // 
             this.tsmiSplit1.Name = "tsmiSplit1";
-            this.tsmiSplit1.Size = new System.Drawing.Size(237, 6);
+            this.tsmiSplit1.Size = new System.Drawing.Size(221, 6);
             // 
             // tsmiProcess
             // 
             this.tsmiProcess.Name = "tsmiProcess";
-            this.tsmiProcess.Size = new System.Drawing.Size(240, 32);
+            this.tsmiProcess.Size = new System.Drawing.Size(224, 32);
             this.tsmiProcess.Text = "Process";
             this.tsmiProcess.Click += new System.EventHandler(this.tsmiProcess_Click);
             // 
             // tsmiSplit2
             // 
             this.tsmiSplit2.Name = "tsmiSplit2";
-            this.tsmiSplit2.Size = new System.Drawing.Size(237, 6);
+            this.tsmiSplit2.Size = new System.Drawing.Size(221, 6);
             // 
             // tsmiCheckAll
             // 
             this.tsmiCheckAll.Name = "tsmiCheckAll";
-            this.tsmiCheckAll.Size = new System.Drawing.Size(240, 32);
+            this.tsmiCheckAll.Size = new System.Drawing.Size(224, 32);
             this.tsmiCheckAll.Text = "Check All";
             this.tsmiCheckAll.Click += new System.EventHandler(this.tsmiCheckAll_Click);
             // 
             // tsmiUncheckAll
             // 
             this.tsmiUncheckAll.Name = "tsmiUncheckAll";
-            this.tsmiUncheckAll.Size = new System.Drawing.Size(240, 32);
+            this.tsmiUncheckAll.Size = new System.Drawing.Size(224, 32);
             this.tsmiUncheckAll.Text = "Uncheck All";
             this.tsmiUncheckAll.Click += new System.EventHandler(this.tsmiUncheckAll_Click);
-            // 
-            // dgvFiles
-            // 
-            this.dgvFiles.AllowUserToAddRows = false;
-            this.dgvFiles.AllowUserToDeleteRows = false;
-            this.dgvFiles.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgvFiles.AutoGenerateColumns = false;
-            this.dgvFiles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvFiles.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.checkedDataGridViewCheckBoxColumn,
-            this.fileNameDataGridViewTextBoxColumn,
-            this.extensionDataGridViewTextBoxColumn,
-            this.ParentDir,
-            this.Changes,
-            this.fullNameDataGridViewTextBoxColumn});
-            this.dgvFiles.DataSource = this.fileItemBindingSource;
-            this.dgvFiles.Location = new System.Drawing.Point(18, 86);
-            this.dgvFiles.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.dgvFiles.MultiSelect = false;
-            this.dgvFiles.Name = "dgvFiles";
-            this.dgvFiles.RowHeadersVisible = false;
-            this.dgvFiles.RowHeadersWidth = 62;
-            this.dgvFiles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvFiles.Size = new System.Drawing.Size(1736, 695);
-            this.dgvFiles.TabIndex = 1;
-            this.dgvFiles.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvFiles_CellMouseClick);
-            this.dgvFiles.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvFiles_CellMouseDoubleClick);
-            this.dgvFiles.CurrentCellDirtyStateChanged += new System.EventHandler(this.dgvFiles_CurrentCellDirtyStateChanged);
             // 
             // bnBrowseRootFolder
             // 
@@ -298,100 +268,22 @@
             this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
             this.dataGridViewTextBoxColumn3.ReadOnly = true;
             // 
-            // bnRefreshFolder
+            // tvFiles
             // 
-            this.bnRefreshFolder.Location = new System.Drawing.Point(1329, 42);
-            this.bnRefreshFolder.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.bnRefreshFolder.Name = "bnRefreshFolder";
-            this.bnRefreshFolder.Size = new System.Drawing.Size(112, 35);
-            this.bnRefreshFolder.TabIndex = 5;
-            this.bnRefreshFolder.Text = "Refresh";
-            this.bnRefreshFolder.UseVisualStyleBackColor = true;
-            this.bnRefreshFolder.Click += new System.EventHandler(this.bnRefreshFolder_Click);
-            // 
-            // ParentDir
-            // 
-            this.ParentDir.DataPropertyName = "ParentDir";
-            this.ParentDir.HeaderText = "ParentDir";
-            this.ParentDir.MinimumWidth = 8;
-            this.ParentDir.Name = "ParentDir";
-            this.ParentDir.ReadOnly = true;
-            this.ParentDir.Width = 150;
-            // 
-            // Changes
-            // 
-            this.Changes.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Changes.DataPropertyName = "Changes";
-            this.Changes.HeaderText = "Changes";
-            this.Changes.MinimumWidth = 8;
-            this.Changes.Name = "Changes";
-            this.Changes.ReadOnly = true;
-            // 
-            // checkedDataGridViewCheckBoxColumn
-            // 
-            this.checkedDataGridViewCheckBoxColumn.DataPropertyName = "Checked";
-            this.checkedDataGridViewCheckBoxColumn.HeaderText = "";
-            this.checkedDataGridViewCheckBoxColumn.MinimumWidth = 8;
-            this.checkedDataGridViewCheckBoxColumn.Name = "checkedDataGridViewCheckBoxColumn";
-            this.checkedDataGridViewCheckBoxColumn.Width = 50;
-            // 
-            // fileNameDataGridViewTextBoxColumn
-            // 
-            this.fileNameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.fileNameDataGridViewTextBoxColumn.DataPropertyName = "FileName";
-            this.fileNameDataGridViewTextBoxColumn.HeaderText = "FileName";
-            this.fileNameDataGridViewTextBoxColumn.MinimumWidth = 8;
-            this.fileNameDataGridViewTextBoxColumn.Name = "fileNameDataGridViewTextBoxColumn";
-            this.fileNameDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // extensionDataGridViewTextBoxColumn
-            // 
-            this.extensionDataGridViewTextBoxColumn.DataPropertyName = "Extension";
-            this.extensionDataGridViewTextBoxColumn.HeaderText = "Extension";
-            this.extensionDataGridViewTextBoxColumn.MinimumWidth = 8;
-            this.extensionDataGridViewTextBoxColumn.Name = "extensionDataGridViewTextBoxColumn";
-            this.extensionDataGridViewTextBoxColumn.ReadOnly = true;
-            this.extensionDataGridViewTextBoxColumn.Width = 60;
-            // 
-            // fullNameDataGridViewTextBoxColumn
-            // 
-            this.fullNameDataGridViewTextBoxColumn.DataPropertyName = "FullName";
-            this.fullNameDataGridViewTextBoxColumn.HeaderText = "FullName";
-            this.fullNameDataGridViewTextBoxColumn.MinimumWidth = 8;
-            this.fullNameDataGridViewTextBoxColumn.Name = "fullNameDataGridViewTextBoxColumn";
-            this.fullNameDataGridViewTextBoxColumn.Visible = false;
-            this.fullNameDataGridViewTextBoxColumn.Width = 150;
-            // 
-            // fileItemBindingSource
-            // 
-            this.fileItemBindingSource.DataSource = typeof(FileSorter.Classes.FileItem);
-            // 
-            // filesContextBindingSource
-            // 
-            this.filesContextBindingSource.DataSource = typeof(FileSorter.Classes.FilesContext);
-            // 
-            // tsmiOpenFolder
-            // 
-            this.tsmiOpenFolder.Name = "tsmiOpenFolder";
-            this.tsmiOpenFolder.Size = new System.Drawing.Size(240, 32);
-            this.tsmiOpenFolder.Text = "Open Folder";
-            this.tsmiOpenFolder.Click += new System.EventHandler(this.tsmiOpenFolder_Click);
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(237, 6);
+            this.tvFiles.Location = new System.Drawing.Point(22, 79);
+            this.tvFiles.Name = "tvFiles";
+            this.tvFiles.Size = new System.Drawing.Size(1298, 709);
+            this.tvFiles.TabIndex = 5;
             // 
             // FMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1772, 800);
-            this.Controls.Add(this.bnRefreshFolder);
+            this.Controls.Add(this.tvFiles);
             this.Controls.Add(this.lRootFolder);
             this.Controls.Add(this.tbRootFolder);
             this.Controls.Add(this.bnBrowseRootFolder);
-            this.Controls.Add(this.dgvFiles);
             this.Controls.Add(this.msMainMenu);
             this.MainMenuStrip = this.msMainMenu;
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -405,9 +297,6 @@
             this.msMainMenu.ResumeLayout(false);
             this.msMainMenu.PerformLayout();
             this.cmsFileListMenu.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvFiles)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.fileItemBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.filesContextBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -422,9 +311,6 @@
         private System.Windows.Forms.ContextMenuStrip cmsFileListMenu;
         private System.Windows.Forms.ToolStripMenuItem tsmiAddAttachment;
         private System.Windows.Forms.ToolStripMenuItem tsmiMoveTo;
-        private System.Windows.Forms.DataGridView dgvFiles;
-        private System.Windows.Forms.BindingSource fileItemBindingSource;
-        private System.Windows.Forms.BindingSource filesContextBindingSource;
         private System.Windows.Forms.Button bnBrowseRootFolder;
         private System.Windows.Forms.TextBox tbRootFolder;
         private System.Windows.Forms.Label lRootFolder;
@@ -442,16 +328,14 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiProcess;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
         private System.Windows.Forms.ToolStripMenuItem tsmiClearChanges;
-        private System.Windows.Forms.Button bnRefreshFolder;
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
         private System.Windows.Forms.DataGridViewCheckBoxColumn checkedDataGridViewCheckBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn fileNameDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn extensionDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ParentDir;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Changes;
         private System.Windows.Forms.DataGridViewTextBoxColumn fullNameDataGridViewTextBoxColumn;
         private System.Windows.Forms.ToolStripMenuItem tsmiOpenFolder;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.TreeView tvFiles;
     }
 }
 
